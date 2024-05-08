@@ -84,61 +84,65 @@ def getColors(file1, file2):
 
     print("UP side colors.")
     p=[(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0)]
-    p[0] = (236,257) #U1
-    p[1] = (310,293) #U2
-    p[2] = (404,342) #U3
-    p[3] = (254,343) #U4
+    p[0] = (176,395) #U1
+    p[1] = (271,317) #U2
+    p[2] = (392,106) #U3
+    p[3] = (263,771) #U4
     #U5 WHITE BY DEFAULT
-    p[4] = (417,431) #U6
-    p[5] = (253,385) #U7
-    p[6] = (354,471) #U8
-    p[7] = (420,506) #U9
+    p[4] = (549,315) #U6
+    p[5] = (340,973) #U7
+    p[6] = (480,807) #U8
+    p[7] = (634,614) #U9
 
     for i in p:
         pix = im.getpixel(i)
         print("\tpixel at:",i, "rgb color:", pix, classify(pix))
         draw.text(i,classify(pix),(255,255,255),font=font)
+        classify(pix):
+            case 'white':
+                print('U')
 
 
     print("RIGHT side colors.")
     p=[(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0)]
     p[0] = (236,257) #R1
     p[1] = (310,293) #R2
-    p[2] = (404,342) #U3
-    p[3] = (254,343) #U4
-    #U5 WHITE BY DEFAULT
-    p[4] = (417,431) #U6
-    p[5] = (253,385) #U7
-    p[6] = (354,471) #U8
-    p[7] = (420,506) #U9
+    p[2] = (404,342) #R3
+    p[3] = (254,343) #R4
+    #R5 RED BY DEFAULT
+    p[4] = (417,431) #R6
+    p[5] = (253,385) #R7
+    p[6] = (354,471) #R8
+    p[7] = (420,506) #R9
 
     for i in p:
         pix = im.getpixel(i)
         print("\tpixel at:",i, "rgb color:", pix, classify(pix))
-        draw.text(i,classify(pix),(255,255,255),font=font)
+        draw.text(i,classify(pix),(255,0,0),font=font)
 
 
-    print("Top side colors.")
+    print("FRONT side colors.")
     p=[(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0)]
-    p[0] = (260,190)
-    p[1] = (334,231)
-    p[2] = (436,263)
-    p[3] = (332,144)
-    p[4] = (516,203)
-    p[5] = (357,107) #this one is hard to see in the image
-    p[6] = (503,133)
-    p[7] = (588,152)
+    p[0] = (260,190) #F1
+    p[1] = (334,231) #F2
+    p[2] = (436,263) #F3
+    p[3] = (332,144) #F4
+     #F5 Green by default
+    p[4] = (516,203) #F6
+    p[5] = (357,107) #F7
+    p[6] = (503,133) #F8
+    p[7] = (588,152) #F9
 
     for i in p:
         pix = im.getpixel(i)
         print("\tpixel at:",i, "rgb color:", pix, classify(pix))
-        draw.text(i,classify(pix),(0,0,0),font=font)
+        draw.text(i,classify(pix),(0,255,0),font=font)
 
 
     im.show()
     im.save("steve.jpg")
     
-    cube= 'UDUDUDUDURLRLRLRLRFBFBFBFBFDUDUDUDUDLRLRLRLRLBFBFBFBFB'
+    cube = 'UDUDUDUDURLRLRLRLRFBFBFBFBFDUDUDUDUDLRLRLRLRLBFBFBFBFB'
     return cube
 
 
