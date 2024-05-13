@@ -1,6 +1,7 @@
 import twophase.solver as sv
 import keyboard
-from getRubiksColor import getColors
+from StringMove import moveString
+from getRubiksColorAvg import getColors
 from camera import captureCube
 
 #steveTest()
@@ -28,9 +29,22 @@ solvedCubeString    = 'UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB'
 checkeredCubeString = 'UDUDUDUDURLRLRLRLRFBFBFBFBFDUDUDUDUDLRLRLRLRLBFBFBFBFB'
 randomCubeString    = 'DUUBULDBFRBFRRULLLBRDFFFBLURDBFDFDRFRULBLUFDURRBLBDUDL'
 
-solution = sv.solve(colorstring,20,0)
+svSolution = sv.solve(checkeredCubeString,20,0)
 
 print("Cube State:", colorstring)
-print("solution:", solution)
+print("svSolution:", svSolution)
 
+svSolution = svSolution.split(' ')
+exSolution = ''
+
+for i in svSolution:
+    if i == 'U1':
+        exSolution += 'U'
+    elif i == 'U2':
+        exSolution += "UU"
+    elif i == 'U1':
+        exSolution += 'u'#lowerCase
+    
+print("solution:", solution)
+#executeSolution(solution)
 #make the robot do the stuff
