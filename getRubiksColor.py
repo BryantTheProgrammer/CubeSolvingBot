@@ -21,12 +21,12 @@ def classify(rgb_tuple):
     # the stated use case you just want to see if your
     # pixel is 'more red' or 'more green'
     colors = {  
-                "orange" : (255,127,0),
+                "white" : (255,255,255),
                 "red"    : (255, 0, 0),
-                "yellow" : (229,255,0),
-                "green"  : (0,255,0),
-                "blue"   : (0,0,255),
-                "white"  : (255,255,255),
+                "blue" : (0, 0,255),
+                "orange"  : (255,134,0),
+                "green"   : (0,128,0),
+                "yellow"  : (255,255,0),
               }
 
     manhattan = lambda x,y : abs(x[0] - y[0]) + abs(x[1] - y[1]) + abs(x[2] - y[2]) 
@@ -40,15 +40,15 @@ def steveTest():
 def getColors(file1, file2):
 
     #file1 = "2024_02_12_14_15_48.jpg"
-    print("opening file:",file1)
+    #print("opening file:",file1)
     im = Image.open(file1)
-    print("Image mode   :",im.mode)
-    print("Image format :",im.format)
-    print("Image palette:",im.palette)
-    print("Image width  :",im.width)
-    print("Image height :",im.height)
+    #print("Image mode   :",im.mode)
+    #print("Image format :",im.format)
+    #print("Image palette:",im.palette)
+    #print("Image width  :",im.width)
+    #print("Image height :",im.height)
     #print("Image info   :",im.info)
-    print("Image bands  :",im.getbands())
+    #print("Image bands  :",im.getbands())
     #print("Colors used  :",im.getcolors())
     #print("palette      :",im.getpalette())
     #print("palette length:",len(im.getpalette()))
@@ -76,74 +76,143 @@ def getColors(file1, file2):
 
     '''
 
-    print("Pixel colors for the 8 colors of each side. Sides are Left, Right, and Top")
-
     draw = ImageDraw.Draw(im)
     font = ImageFont.truetype("arial.ttf", 16)
     #draw.text((0, 0),"Sample Text",(255,255,255),font=font)
-
-    print("UP side colors.")
-    p=[(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0)]
-    p[0] = (176,395) #U1
-    p[1] = (271,317) #U2
-    p[2] = (392,106) #U3
-    p[3] = (263,771) #U4
-    #U5 WHITE BY DEFAULT
-    p[4] = (549,315) #U6
-    p[5] = (340,973) #U7
-    p[6] = (480,807) #U8
-    p[7] = (634,614) #U9
-
-    for i in p:
-        pix = im.getpixel(i)
-        print("\tpixel at:",i, "rgb color:", pix, classify(pix))
-        draw.text(i,classify(pix),(255,255,255),font=font)
-        classify(pix):
-            case 'white':
-                print('U')
-
-
-    print("RIGHT side colors.")
-    p=[(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0)]
-    p[0] = (236,257) #R1
-    p[1] = (310,293) #R2
-    p[2] = (404,342) #R3
-    p[3] = (254,343) #R4
-    #R5 RED BY DEFAULT
-    p[4] = (417,431) #R6
-    p[5] = (253,385) #R7
-    p[6] = (354,471) #R8
-    p[7] = (420,506) #R9
-
-    for i in p:
-        pix = im.getpixel(i)
-        print("\tpixel at:",i, "rgb color:", pix, classify(pix))
-        draw.text(i,classify(pix),(255,0,0),font=font)
-
-
-    print("FRONT side colors.")
-    p=[(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0)]
-    p[0] = (260,190) #F1
-    p[1] = (334,231) #F2
-    p[2] = (436,263) #F3
-    p[3] = (332,144) #F4
-     #F5 Green by default
-    p[4] = (516,203) #F6
-    p[5] = (357,107) #F7
-    p[6] = (503,133) #F8
-    p[7] = (588,152) #F9
-
-    for i in p:
-        pix = im.getpixel(i)
-        print("\tpixel at:",i, "rgb color:", pix, classify(pix))
-        draw.text(i,classify(pix),(0,255,0),font=font)
-
-
-    im.show()
-    im.save("steve.jpg")
+    halfCube = ' ' * 27
+    firstCube = list(halfCube)
+    secondCube = list(halfCube)
+    wholeCube = ''
     
-    cube = 'UDUDUDUDURLRLRLRLRFBFBFBFBFDUDUDUDUDLRLRLRLRLBFBFBFBFB'
-    return cube
+    p1=[(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),
+       (0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),
+       (0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0)]
+    p1[0] = (203,455) #U1
+    p1[1] = (285,333) #U2
+    p1[2] = (395,83) #U3
+    p1[3] = (290,763) #U4
+    #U5 /p1[4] WHITE BY DEFAULT
+    
+    p1[5] = (540,300) #U6
+    p1[6] = (430,1014) #U7
+    p1[7] = (550,822) #U8
+    p1[8] = (698,580) #U9
+    
+    p1[9] = (914,415) #R1
+    p1[10] = (748,155) #R2
+    p1[11] = (640,5) #R3
+    p1[12] = (1163,424) #R4
+    #R5/p1[13] RED BY DEFAULT
+
+    p1[14] = (830,24) #R6
+    p1[15] = (1335,434) #R7
+    p1[16] = (1187,253) #R8
+    p1[17] = (990,52) #R9
+    
+    p1[18] = (630,1108) #F1
+    p1[19] = (760,930) #F2
+    p1[20] = (917,706) #F3
+    p1[21] = (844,1039) #F4
+     #F5/22 Green by default
+
+    p1[23] = (1160,670) #F6
+    p1[24] = (986,998) #F7
+    p1[25] = (1184,812) #F8
+    p1[26] = (1332,654) #F9
+    
+    for idx, i in enumerate(p1):
+        pix = im.getpixel(i)
+        color = classify(pix)
+        draw.text(i,classify(pix),(255,255,255),font=font)
+        if(color == 'white'):
+            firstCube[idx] = 'U'
+        elif(color == 'blue'):
+            firstCube[idx] = 'B'
+        elif(color == 'red'):
+            firstCube[idx] = 'R'
+        elif(color == 'orange'):
+            firstCube[idx] = 'L'
+        elif(color == 'yellow'):
+            firstCube[idx] = 'D'
+        elif(color == 'green'):
+            firstCube[idx] = 'F'
+
+    firstCube[4] = 'U'
+    firstCube[13] = 'R'
+    firstCube[22] = 'F'
+
+    im.save("angle1marked.jpg")
+    
+    im = Image.open(file2)
+    draw = ImageDraw.Draw(im)
+
+    #ANgle 2
+    p2=[(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),
+       (0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),
+       (0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0)]
+    
+    p2[0] = (296,940) #D1
+    p2[1] = (210,694) #D2
+    p2[2] = (134,572) #D3
+    p2[3] = (462,762) #D4
+    #D5 /p2[4] YELLOW BY DEFAULT
+    p2[5] = (218,301) #D6
+    p2[6] = (627,498) #D7
+    p2[7] = (463,236) #D8
+    p2[8] = (330,54) #D9
+    
+    p2[9] = (1253,652) #L1
+    p2[10] = (1093,827) #L2
+    p2[11] = (899, 1015) #L3
+    p2[12] = (1077,640) #L4
+    #L5/p2[13] RED BY DEFAULT
+
+    p2[14] = (733,1032) #L6
+    p2[15] = (861,633) #L7
+    p2[16] = (667,873) #L8
+    p2[17] = (500,1070) #L9
+    
+    p2[18] = (919,34) #B1
+    p2[19] = (1132,242) #B2
+    p2[20] = (1263,409) #B3
+    p2[21] = (783,1) #B4
+     #B5/22 Green by default
+
+    p2[23] = (1102,398) #B6
+    p2[24] = (641,1) #B7
+    p2[25] = (681,121) #B8
+    p2[26] = (868,353) #B9
+    for idx, i in enumerate(p2):
+        pix = im.getpixel(i)
+        color = classify(pix)
+        draw.text(i,classify(pix),(255,255,255),font=font)
+        if(color == 'white'):
+            secondCube[idx] = 'U'
+        elif(color == 'blue'):
+            secondCube[idx] = 'B'
+        elif(color == 'red'):
+            secondCube[idx] = 'R'
+        elif(color == 'orange'):
+            secondCube[idx] = 'L'
+        elif(color == 'yellow'):
+            secondCube[idx] = 'D'
+        elif(color == 'green'):
+            secondCube[idx] = 'F'
+            
+    secondCube[4] = 'D'
+    secondCube[13] = 'L'
+    secondCube[22] = 'B'
+
+    im.save("angle2marked.jpg")
+    firstCube = "".join(firstCube)
+    secondCube = "".join(secondCube)
+    print('First Cube: ', firstCube)
+    print('Second Cube: ', secondCube)
+    
+    wholeCube = firstCube + secondCube
+    print('Whole Cube: ', wholeCube)
+    
+    return wholeCube
 
 
 #test lines

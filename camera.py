@@ -7,6 +7,7 @@ have to have installed opencv python libraries:
     I'm not sure what the equivalent windows install is
 '''
 import cv2 as cv
+import time
 
 #print(cv.__version__)
 
@@ -14,23 +15,26 @@ import cv2 as cv
 # initialize the camera 
 # If you have multiple cameras connected with  
 # current device, assign a value in cam_port  
-# variable according to that 
-cam_port1 = 0
-cam_port2 = 2
+# variable according to that
+def captureCube(file1, file2):
+    cam_port1 = 0
+    cam_port2 = 2
 
-cam1 = cv.VideoCapture(cam_port1)
+    cam1 = cv.VideoCapture(cam_port1)
+    #sleep for a second to let the camera adjust.
+    time.sleep(1)
 
-result, image1 = cam1.read()
-cam1.release()
+    result, image1 = cam1.read()
+    cam1.release()
 
-cam2 = cv.VideoCapture(cam_port2)
+    cam2 = cv.VideoCapture(cam_port2)
+    time.sleep(1)
+    result, image2 = cam2.read()
+    cam2.release()
 
-result, image2 = cam2.read()
-cam2.release()
+    print("Camera1:",result)
+    print("Camera2:",result)
 
-print("Camera1:",result)
-print("Camera2:",result)
-
-cv.imwrite("Angle1.png",image1)
-cv.imwrite("Angle2.png",image2)
+    cv.imwrite(file1,image1)
+    cv.imwrite(file2,image2)
 
