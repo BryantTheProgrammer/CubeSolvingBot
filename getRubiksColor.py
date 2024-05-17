@@ -2,6 +2,7 @@ from PIL import Image, ImageColor, ImageDraw, ImageFont
 import numpy as np
 
 
+
 def getPaletteColor(pal,code):
     return (pal[3*code],pal[3*code + 1],pal[3*code + 2])
 
@@ -14,20 +15,43 @@ https://stackoverflow.com/questions/36439384/classifying-rgb-values-in-python
 
 much code by Steve Sheehy, 2024
 '''
-def classify(rgb_tuple):
+
+def calibrate(im, color, p, p_start, p_end):
+    print("calibrating", color)
+    avgR = 0
+    avgG = 0
+    avgB = 0
+    for idx, i in enumerate(p[p_start:p_end]):
+        if idx == 4: 
+            continue
+        pix = im.getpixel(i)
+        print("idx:",idx, color, " sample:",pix)
+        avgR += pix[0]
+        avgG += pix[1]
+        avgB += pix[2]
+    avgR = avgR // 8
+    avgG = avgG // 8
+    avgB = avgB // 8
+    avgRGB = (avgR, avgG, avgB)
+    print(color, "average pixel:",avgRGB)
+    return avgRGB
+
+def classify(rgb_tuple, colors):
     # eg. rgb_tuple = (2,44,300)
 
     # add as many colors as appropriate here, but for
     # the stated use case you just want to see if your
     # pixel is 'more red' or 'more green'
+    '''  the original colors before May 13
     colors = {  
                 "white" : (255,255,255),
                 "red"    : (255, 0, 0),
                 "blue" : (0, 0,255),
+                "green"   : (0,255,0),
                 "orange"  : (255,134,0),
-                "green"   : (0,128,0),
                 "yellow"  : (255,255,0),
               }
+    '''
 
     manhattan = lambda x,y : abs(x[0] - y[0]) + abs(x[1] - y[1]) + abs(x[2] - y[2]) 
     distances = {k: manhattan(v, rgb_tuple) for k, v in colors.items()}
@@ -37,7 +61,7 @@ def classify(rgb_tuple):
 def steveTest():
     print("hello from steveTest")
 
-def getColors(file1, file2):
+def getColors(file1, file2, p1, p2, colors):
 
     #file1 = "2024_02_12_14_15_48.jpg"
     #print("opening file:",file1)
@@ -58,7 +82,6 @@ def getColors(file1, file2):
     #print("2: ",getPaletteColor(p,2))
     #print("3: ",getPaletteColor(p,3))
     #print("4: ",getPaletteColor(p,4))
-
 
     #im.show()
 
@@ -84,126 +107,78 @@ def getColors(file1, file2):
     secondCube = list(halfCube)
     wholeCube = ''
     
-    p1=[(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),
-       (0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),
-       (0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0)]
-    p1[0] = (203,455) #U1
-    p1[1] = (285,333) #U2
-    p1[2] = (395,83) #U3
-    p1[3] = (290,763) #U4
-    #U5 /p1[4] WHITE BY DEFAULT
-    
-    p1[5] = (540,300) #U6
-    p1[6] = (430,1014) #U7
-    p1[7] = (550,822) #U8
-    p1[8] = (698,580) #U9
-    
-    p1[9] = (914,415) #R1
-    p1[10] = (748,155) #R2
-    p1[11] = (640,5) #R3
-    p1[12] = (1163,424) #R4
-    #R5/p1[13] RED BY DEFAULT
-
-    p1[14] = (830,24) #R6
-    p1[15] = (1335,434) #R7
-    p1[16] = (1187,253) #R8
-    p1[17] = (990,52) #R9
-    
-    p1[18] = (630,1108) #F1
-    p1[19] = (760,930) #F2
-    p1[20] = (917,706) #F3
-    p1[21] = (844,1039) #F4
-     #F5/22 Green by default
-
-    p1[23] = (1160,670) #F6
-    p1[24] = (986,998) #F7
-    p1[25] = (1184,812) #F8
-    p1[26] = (1332,654) #F9
     
     for idx, i in enumerate(p1):
         pix = im.getpixel(i)
-        color = classify(pix)
-        draw.text(i,classify(pix),(255,255,255),font=font)
+        color = classify(pix, colors)
+        draw.text(i,classify(pix, colors),(255,255,255),font=font)
         if(color == 'white'):
             firstCube[idx] = 'U'
         elif(color == 'blue'):
             firstCube[idx] = 'B'
         elif(color == 'red'):
             firstCube[idx] = 'R'
-        elif(color == 'orange'):
+        elif(color == 'black'):
             firstCube[idx] = 'L'
         elif(color == 'yellow'):
             firstCube[idx] = 'D'
         elif(color == 'green'):
             firstCube[idx] = 'F'
 
+    #setting the default colors
     firstCube[4] = 'U'
     firstCube[13] = 'R'
     firstCube[22] = 'F'
 
-    im.save("angle1marked.jpg")
+    im.save("angle1markedSteve.jpg")
+    im.show()
     
     im = Image.open(file2)
     draw = ImageDraw.Draw(im)
 
-    #ANgle 2
-    p2=[(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),
-       (0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),
-       (0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0),(0,0)]
-    
-    p2[0] = (296,940) #D1
-    p2[1] = (210,694) #D2
-    p2[2] = (134,572) #D3
-    p2[3] = (462,762) #D4
-    #D5 /p2[4] YELLOW BY DEFAULT
-    p2[5] = (218,301) #D6
-    p2[6] = (627,498) #D7
-    p2[7] = (463,236) #D8
-    p2[8] = (330,54) #D9
-    
-    p2[9] = (1253,652) #L1
-    p2[10] = (1093,827) #L2
-    p2[11] = (899, 1015) #L3
-    p2[12] = (1077,640) #L4
-    #L5/p2[13] RED BY DEFAULT
 
-    p2[14] = (733,1032) #L6
-    p2[15] = (861,633) #L7
-    p2[16] = (667,873) #L8
-    p2[17] = (500,1070) #L9
-    
-    p2[18] = (919,34) #B1
-    p2[19] = (1132,242) #B2
-    p2[20] = (1263,409) #B3
-    p2[21] = (783,1) #B4
-     #B5/22 Green by default
 
-    p2[23] = (1102,398) #B6
-    p2[24] = (641,1) #B7
-    p2[25] = (681,121) #B8
-    p2[26] = (868,353) #B9
     for idx, i in enumerate(p2):
-        pix = im.getpixel(i)
-        color = classify(pix)
-        draw.text(i,classify(pix),(255,255,255),font=font)
+        print("idx:",idx)
+        pix1 = im.getpixel(i)
+        #print("i  :",i,"pix  :",pix1)
+
+        p5i = (i[0]+5,i[1]+5)
+        pixp5 = im.getpixel(p5i)
+        #print("p5i:",p5i,"pixp5:",pixp5)
+
+        p9i = (i[0]+9,i[1]+9)
+        pixp9 = im.getpixel(p9i)
+        #print("p9i:",p9i,"pixp9:",pixp9)
+
+        avgp = ((pix1[0] + pixp5[0] + pixp9[0]) // 3,
+                (pix1[1] + pixp5[1] + pixp9[1]) // 3,
+                (pix1[2] + pixp5[2] + pixp9[2]) // 3)
+
+        color = classify(avgp, colors)
+        print("avgp:",avgp, "color:",color)
+
+        draw.text(i,classify(avgp, colors),(255,255,255),font=font)
         if(color == 'white'):
             secondCube[idx] = 'U'
         elif(color == 'blue'):
             secondCube[idx] = 'B'
         elif(color == 'red'):
             secondCube[idx] = 'R'
-        elif(color == 'orange'):
+        elif(color == 'black'):
             secondCube[idx] = 'L'
         elif(color == 'yellow'):
             secondCube[idx] = 'D'
         elif(color == 'green'):
             secondCube[idx] = 'F'
+        print("===")
             
     secondCube[4] = 'D'
     secondCube[13] = 'L'
     secondCube[22] = 'B'
 
-    im.save("angle2marked.jpg")
+    im.save("angle2markedSteve.jpg")
+    im.show()
     firstCube = "".join(firstCube)
     secondCube = "".join(secondCube)
     print('First Cube: ', firstCube)
@@ -216,10 +191,10 @@ def getColors(file1, file2):
 
 
 #test lines
-#filename1 = "2024_02_12_14_15_48.jpg"
-#filename2 = "2024_02_12_14_15_48.jpg"
+#filename1 = "Angle1.png"
+#filename2 = "Angle2.png"
 
-#getColors(filename1,filename2)
+#getColors(filename1,filename2, p1, p2)
 '''
     The names of the facelet positions of the cube
                   |************|
