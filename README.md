@@ -5,7 +5,9 @@ In this version I provide the CAD files I created to build a Rubik's Cube solvin
 that accompanies it that will take a scrambled rubiks cube and solve it.
 
 ## Usage
-*Under Construction more to come very soon!*
+[](https://github.com/user-attachments/assets/9bcec84c-aa8d-4b4f-8178-a393e17350c7)
+
+*Under Construction, more to come this month as the project picks back up!*
 
 
 [RubiksCube-TwophaseSolver]: https://github.com/hkociemba/RubiksCube-TwophaseSolver
