@@ -6,21 +6,28 @@ from adafruit_motor import stepper
 from adafruit_motorkit import MotorKit
 import keyboard
 
+# Three motor controller hats on the Raspberry Pi
 kit1 = MotorKit(i2c=board.I2C())
 kit2 = MotorKit(i2c=board.I2C(), address=0x61)
 kit3 = MotorKit(i2c=board.I2C(), address=0x62)
 
+# Function will iterate through a string of characters to move that face. 
 def moveString(string):
     for char in string:
         move(char)
         time.sleep(0)
         
-        kit1.stepper1.release()
-        kit1.stepper2.release()
-        kit2.stepper1.release()
-        kit2.stepper2.release()
-        kit3.stepper1.release()
-        kit3.stepper2.release()
+        releaseMotors()
+
+'''
+    There are 12 different ways in which to turn the cube, clockwise on 1 of 6 faces, 
+    or counterclockwise on 1 of the same 6 faces.
+
+    The letter corresponds to the face name, Up, Down, Right, Left, Front, Back.
+    Capitilization refers to rotation direction. A captiol means clockwise, and a lowercase means counter clockwise.
+
+'''
+ # there is probably a more efficient way to write this if statement, area for improvment in later releases
 def move(char):
     if char =='U':
         for i in range(51):
@@ -79,21 +86,32 @@ def main():
     # Start a listener to monitor key presses
     options = ['R', 'L', 'B', 'D', 'U', 'F', 'u', 'd', 'l', 'r', 'b', 'f']  # Define the set of letters to choose from
     string_length = 20  # Specify the length of the random string
+
+    # Generate a random set of moves to be executed on the cube. 
     random_string = generate_random_string(options, string_length)
     print("Random string:", random_string)
 
-#moveString("ffrrllbbdduu")
-    #moveString("LFLRD")#drlfl
-#     moveString("drlfl")#drlfl
+    # moveString(random_string)
+
+    # moveString("ffrrllbbdduu")
+    # moveString("LFLRD")#drlfl
+    # moveString("drlfl")#drlfl
     moveString("UUDDBBFFLLRR")#drlfl
 
 if __name__ == "__main__":
     main()
-    
-kit1.stepper1.release()
-kit1.stepper2.release()
-kit2.stepper1.release()
-kit2.stepper2.release()
-kit3.stepper1.release()
-kit3.stepper2.release()
+
+# Releasing all the motors is very important. 
+# If you find that a motor is getting hot it is because you are not reaching this line of code.
+
+def releaseMotors():
+    kit1.stepper1.release()
+    kit1.stepper2.release()
+    kit2.stepper1.release()
+    kit2.stepper2.release()
+    kit3.stepper1.release()
+    kit3.stepper2.release()
+
+# always good to gve this function a call.
+releaseMotors()
 

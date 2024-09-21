@@ -1,19 +1,17 @@
 from PIL import Image, ImageColor, ImageDraw, ImageFont
 import numpy as np
 
-
-
 def getPaletteColor(pal,code):
     return (pal[3*code],pal[3*code + 1],pal[3*code + 2])
-
-
 
 '''
 The classify() function below is taken from the following post, and modified to handle additional colors.
 Post was by Jacob Ritchie on April 6, 2016
 https://stackoverflow.com/questions/36439384/classifying-rgb-values-in-python
 
-much code by Steve Sheehy, 2024
+Collaborators
+Steve Sheehy, 2024
+Bryant Hayden, 2024
 '''
 
 def calibrate(im, color, p, p_start, p_end):
@@ -63,9 +61,11 @@ def steveTest():
 
 def getColors(file1, file2, p1, p2, colors):
 
+    ### The following code is a series debugging tools that will prove useful during code modifications
+
     #file1 = "2024_02_12_14_15_48.jpg"
     #print("opening file:",file1)
-    im = Image.open(file1)
+    #im = Image.open(file1)
     #print("Image mode   :",im.mode)
     #print("Image format :",im.format)
     #print("Image palette:",im.palette)
@@ -103,10 +103,13 @@ def getColors(file1, file2, p1, p2, colors):
     font = ImageFont.truetype("arial.ttf", 16)
     #draw.text((0, 0),"Sample Text",(255,255,255),font=font)
     halfCube = ' ' * 27
+
+    # First and second cube refer to the first cube angle and second cube angle each of which should contain 27 Cubies
     firstCube = list(halfCube)
     secondCube = list(halfCube)
+
+    # the whole cube will be a combination of the first and second cube angles
     wholeCube = ''
-    
     
     for idx, i in enumerate(p1):
         pix = im.getpixel(i)
@@ -125,7 +128,7 @@ def getColors(file1, file2, p1, p2, colors):
         elif(color == 'green'):
             firstCube[idx] = 'F'
 
-    #setting the default colors
+    #setting the default colors of the centers as they can't change
     firstCube[4] = 'U'
     firstCube[13] = 'R'
     firstCube[22] = 'F'
@@ -179,6 +182,7 @@ def getColors(file1, file2, p1, p2, colors):
 
     im.save("angle2markedSteve.jpg")
     im.show()
+
     firstCube = "".join(firstCube)
     secondCube = "".join(secondCube)
     print('First Cube: ', firstCube)
@@ -195,31 +199,4 @@ def getColors(file1, file2, p1, p2, colors):
 #filename2 = "Angle2.png"
 
 #getColors(filename1,filename2, p1, p2)
-'''
-    The names of the facelet positions of the cube
-                  |************|
-                  |*U1**U2**U3*|
-                  |************|
-                  |*U4**U5**U6*|
-                  |************|
-                  |*U7**U8**U9*|
-                  |************|
-     |************|************|************|************|
-     |*L1**L2**L3*|*F1**F2**F3*|*R1**R2**R3*|*B1**B2**B3*|
-     |************|************|************|************|
-     |*L4**L5**L6*|*F4**F5**F6*|*R4**R5**R6*|*B4**B5**B6*|
-     |************|************|************|************|
-     |*L7**L8**L9*|*F7**F8**F9*|*R7**R8**R9*|*B7**B8**B9*|
-     |************|************|************|************|
-                  |************|
-                  |*D1**D2**D3*|
-                  |************|
-                  |*D4**D5**D6*|
-                  |************|
-                  |*D7**D8**D9*|
-                  |************|
-    A cube definition string "UBL..." means for example: In position U1 we have the U-color, in position U2 we have the
-    B-color, in position U3 we have the L color etc. according to the order U1, U2, U3, U4, U5, U6, U7, U8, U9, R1, R2,
-    R3, R4, R5, R6, R7, R8, R9, F1, F2, F3, F4, F5, F6, F7, F8, F9, D1, D2, D3, D4, D5, D6, D7, D8, D9, L1, L2, L3, L4,
-    L5, L6, L7, L8, L9, B1, B2, B3, B4, B5, B6, B7, B8, B9 of the enum constants.
-'''
+

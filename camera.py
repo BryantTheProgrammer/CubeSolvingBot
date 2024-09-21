@@ -17,18 +17,22 @@ import time
 # current device, assign a value in cam_port  
 # variable according to that
 def captureCube(file1, file2):
+    # these ports depend on which usb port you use, but should be one of the following [0,1,2,3]
     cam_port1 = 0
     cam_port2 = 2
 
     cam1 = cv.VideoCapture(cam_port1)
-    #sleep for a second to let the camera adjust.
+    #sleep for a second to let the camera adjust to lighting.
     time.sleep(1)
 
     result, image1 = cam1.read()
+    # releasing the camera is important for the second camera to be able to capture.
     cam1.release()
+
 
     cam2 = cv.VideoCapture(cam_port2)
     time.sleep(1)
+
     result, image2 = cam2.read()
     cam2.release()
 
